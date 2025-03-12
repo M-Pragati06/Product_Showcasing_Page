@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>E_Commerce</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='style.css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet"> -->
+</head>
+<body>
+
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="logo.png" alt="Logo"> <!-- Adjust logo size -->
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="input-group d-flex me-auto">
+                    <input class="form-control rounded-search" id="search-input" type="search" placeholder="Search products..." aria-label="Search" oninput="showSuggestions(this.value)">
+                    <button class="btn btn-info rounded-search" type="button" onclick="showMatchingProducts()"><i class="fas fa-search"></i></button>
+                </div>
+                <div id="suggestions" class="suggestions-container"></div>
+                <ul class="navbar-nav ms-auto"> 
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="sortByDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Sort Products
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="sortByDropdown">
+                            <li><a class="dropdown-item" href="#" data-sort="low-to-high">Price: Low to High</a></li>
+                            <li><a class="dropdown-item" href="#" data-sort="high-to-low">Price: High to Low</a></li>
+                            <li><a class="dropdown-item" href="#" data-sort="popularity">Popularity</a></li>
+                            <li><a class="dropdown-item" href="#" data-sort="new-arrivals">New Arrivals</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="wishlist.html"><i class="fas fa-heart"></i></a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" id="cart" data-bs-toggle="modal" data-bs-target="#addToCartModal"><i class="fas fa-shopping-cart"></i></a>
+                    </li> -->
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" id="cartIcon">
+                            <i class="fas fa-shopping-cart mr-0 pr-0"></i>
+                            <span id="cartCount" class="ml-0 p-0 badge badge-pill badge-info text-inf0">0</span> <!-- Display Cart Count -->
+                        </a>
+                    </li>
+                    <li class="nav-i
+                     0 tem">
+                        <a class="nav-link" href="#"><i class="fas fa-user"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- main container -->
+    <div class="container-fluid main-section">
+        
+        
+        <!-- Spinner -->
+        <div class="spinner-container" id="spinner">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 sidebar pb-lg-5">
+                
+                
+                <div class="mb-4">
+                    <h6 class="fw-bolder side-heading text-uppercase text-center">Category</h6>
+                    <ul class="list-group">
+                        <li class="list-group-item list-group-item-action">
+                            <h6 class="mb-1">Home:</h6>
+                            <input type="checkbox" data-category="furniture"/> Furniture<br>
+                            <input type="checkbox" data-category="groceries"/> Groceries<br>
+                            <input type="checkbox" data-category="home-decoration"/> Home Decoration<br>
+                            <input type="checkbox" data-category="kitchen-accessories"/> Kitchen Accessories
+                        </li>
+                        <li class="list-group-item list-group-item-action">
+                            <h6 class="mb-1">Electronics:</h6>
+                            <input type="checkbox" data-category="laptops"/> Laptops<br>
+                            <input type="checkbox" data-category="mobile-accessories"/> Mobile Accessories<br>
+                            <input type="checkbox" data-category="smartphones"/> Smartphones
+                        </li>
+                        <li class="list-group-item list-group-item-action">
+                            <h6 class="mb-1">Men:</h6>
+                            <input type="checkbox" data-category="mens-shirts"/> Men's Shirts<br>
+                            <input type="checkbox" data-category="mens-shoes"/> Men's Shoes<br>
+                            <input type="checkbox" data-category="mens-watches"/> Men's Watches
+                        </li>
+                        <li class="list-group-item list-group-item-action">
+                            <h6 class="mb-1">Women:</h6>
+                            <input type="checkbox" data-category="womens-bags"/> Women's Bags<br>
+                            <input type="checkbox" data-category="womens-dresses"/> Women's Dresses<br>
+                            <input type="checkbox" data-category="womens-jwellery"/> Women's Jewellery<br>
+                            <input type="checkbox" data-category="womens-shoes"/> Women's Shoes<br>
+                            <input type="checkbox" data-category="womens-watches"/> Women's Watches
+                        </li>
+                        <li class="list-group-item list-group-item-action">
+                            <h6 class="mb-1">Others:</h6>
+                            <input type="checkbox" data-category="beauty"/> Beauty<br>
+                            <input type="checkbox" data-category="fragrances"/> Fragrances<br>
+                            <input type="checkbox" data-category="motorcycle"/> Motorcycle<br>
+                            <input type="checkbox" data-category="skincare"/> Skin Care<br>
+                            <input type="checkbox" data-category="sports-accessories"/> Sports Accessories<br>
+                            <input type="checkbox" data-category="sunglasses"/> Sunglasses<br>
+                            <input type="checkbox" data-category="tablets"/> Tablets<br>
+                            <input type="checkbox" data-category="tops"/> Tops<br>
+                            <input type="checkbox" data-category="vehicles"/> Vehicle
+                        </li>
+                    </ul>
+                </div>
+            
+                <div class="mb-4">
+                    <h6 class="fw-bold side-heading">Price Range</h6>
+                    <input type="range" class="form-range" min="0" max="5000" step="100" id="priceRange">
+                    <div>Price: $<span id="priceValue">0</span></div>
+                </div>
+            
+                <div class="mb-4">
+                    <h6 class="fw-bold side-heading">Brand</h6>
+                    <select class="form-select">
+                        <option selected>Choose a brand...</option>
+                        <option value="1">Brand A</option>
+                        <option value="2">Brand B</option>
+                        <option value="3">Brand C</option>
+                    </select>
+                </div>
+            
+                <div class="mb-4">
+                    <h6 class="fw-bold side-heading ">Ratings</h6>
+                    <ul class="list-group rating">
+                        <li class="list-group-item list-group-item-action">
+                            <input type="radio" name="rating" value="5" />
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </li>
+                        <li class="list-group-item list-group-item-action">
+                            <input type="radio" name="rating" value="4" />
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </li>
+                        <li class="list-group-item list-group-item-action">
+                            <input type="radio" name="rating" value="3" />
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </li>
+                        <li class="list-group-item list-group-item-action">
+                            <input type="radio" name="rating" value="2" />
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </li>
+                        <li class="list-group-item list-group-item-action">
+                            <input type="radio" name="rating" value="1" />
+                            <i class="fas fa-star"></i>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Include Font Awesome -->
+                <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
+                
+            
+                <div class="mb-4">
+                    <h6 class="fw-bold side-heading">Availability</h6>
+                    <div class="availability">
+                    <div>
+                        <input type="radio" name="availability" id="inStock" value="inStock" /> 
+                        <label for="inStock">In Stock</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="availability" id="outOfStock" value="outOfStock" /> 
+                        <label for="outOfStock">Out of Stock</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="availability" id="all" value="all" checked /> 
+                        <label for="all">All</label>
+                    </div>
+                </div>
+                </div>
+            </div> 
+    
+            <!-- Card Container -->
+            <div class="col-md-9 main-container-product">
+  
+  <!-- Modal -->
+  <!-- Modal -->
+  <div class="modal fade" id="addToCartModal" tabindex="-1" aria-labelledby="addToCartModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addToCartModalLabel">Your Cart</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th>Remove</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cartDetails">
+                            <!-- Cart items will be dynamically injected here by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-danger" onClick="clearCart()">Clear Cart</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+                <!-- <h1 class="my-3 text-center fw-bold" style="font-family: Arial;">Our Products</h1> -->
+                <div class="row main-product" id="productContainer"></div>
+                
+                  
+                
+
+            
+        </div>
+    </div>
+
+    <!-- Newsletter Modal -->
+<div class="modal news-modal fade show" id="newsletterModal" tabindex="-1" aria-labelledby="newsletterModalLabel" aria-hidden="true" style="display:block;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-4 text-center">
+            <button type="button" class="btn-close position-absolute end-0 me-3 mt-3" data-bs-dismiss="modal" aria-label="Close"></button>
+            <img src="newsletter.png" class="modal-image" alt="newsletter">
+            <h3 class="modal-title my-3 text-info" id="newsletterModalLabel">Subscribe to Our Newsletter</h3>
+            <p class="mb-4">Get the latest updates and exclusive offers straight to your inbox.</p>
+            <form>
+                <div class="mb-3">
+                    <input type="email" class="form-control" placeholder="Enter your email" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Subscribe</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+    
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script> -->
+    <script src='main.js'></script>
+</body>
+</html>
